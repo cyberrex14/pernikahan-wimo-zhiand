@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
+    <style>
+        body { margin:0; font-family: 'Playfair Display', serif; background:#faf6f0; color:#333; }
+
+        h1, h2, h3 { font-family: 'Great Vibes', cursive; }
+
+        /* Cover Section */
+        .cover { 
+            height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+            background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('foto/4.jpg') center/cover no-repeat; 
+            color:white; text-align:center; animation: fadeIn 2s ease-in-out; position:relative;
+            transition: background 0.5s ease-in-out;
+            position: fixed; 
+            top: 0; left: 0; width: 100%; z-index: 999;
+        }
+        .cover::before { 
+            content:""; position:absolute; top:0; left:0; right:0; bottom:0; 
+            background:url('motif-cover.png') repeat; opacity:0.15; 
+        }
+        .cover h1 { font-size:60px; margin:0; z-index:1; }
+        .cover p { font-size:24px; z-index:1; }
+        .cover button { 
+            z-index:1; background:#fff; color:#d4a373; padding:12px 30px; 
+            border:none; border-radius:30px; cursor:pointer; font-size:18px; 
+            box-shadow:0 4px 8px rgba(0,0,0,0.2); transition:0.3s; 
+        }
+        .cover button:hover { background:#d4a373; color:white; }
+
+        /* General Section Styling */
+        .section { 
+            padding:60px 20px; text-align:center; 
+            animation: fadeInUp 1s ease-in-out; 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius:15px; margin:0 0 20px 0; 
+            box-shadow:0 4px 20px rgba(0,0,0,0.1);
+            transition: padding-top 0.5s ease-out;
+            background-image: url('foto/wed1.jpeg'); /* Background image from uploaded file */
+        }
+
+        /* Customize Backgrounds for each Section */
+        .section.default-bg {
+            background-image: url('motif-isi.png');
+        }
+
+        /* Style for images */
+        img { max-width:100%; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.1); }
+
+        /* Gallery layout */
+        .gallery { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px; }
+
+        /* Countdown Timer */
+        .countdown { font-size:28px; font-weight:bold; background:#fff8f0; padding:15px; border-radius:10px; display:inline-block; }
+
+        /* Address layout */
+        .alamat-container { display:flex; flex-wrap:wrap; justify-content:center; gap:40px; }
+
+        .alamat-box { background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); width:300px; }
+
+        /* Form Styling */
+        form { max-width:450px; margin:auto; display:flex; flex-direction:column; gap:15px; }
+        input, select, button { padding:12px; font-size:16px; border-radius:8px; border:1px solid #ccc; }
+        button { background:#d4a373; color:white; border:none; cursor:pointer; font-weight:bold; }
+        button:hover { background:#b07a4e; }
+
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes fadeInUp { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+        /* For smooth transition of content */
+        .main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out, visibility 0s 1s;
+        }
+        .main-content.show {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1s ease-in-out, visibility 0s 0s;
+        }
+
+        /* Styling for RSVP Form */
+        .rsvp-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: #d4a373;
+        }
+
+        .input-group input::placeholder, .input-group select::placeholder {
+            color: #aaa;
+        }
+
+        /* Styling for the submit button */
+        button {
+            background: #d4a373;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: #b07a4e;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Audio yang akan diputar setelah tombol ditekan -->
+    <audio id="bg-music" loop>
+        <source src="musik.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Cover Section -->
+    <div class="cover" id="cover">
+        <h1>Wimo & Zhiand</h1>
+        <p>Undangan Pernikahan</p>
+        <button onclick="openInvitation()">Buka Undangan</button>
+    </div>
+
+    <!-- Content Section (Initially Hidden) -->
+    <div class="main-content" id="main-content">
+        <!-- Foto pertama -->
+        <div class="section">
+            <img src="foto/5.jpg" alt="Foto Mempelai">
+        </div>
+
+        <div class="section default-bg">
+            <p><strong>Assalamu’alaikum Wr. Wb.</strong></p>
+            <p>Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta’ala, insyaa Allah kami akan menyelenggarakan acara pernikahan:</p>
+
+            <h2>Wimo Wiean Cahyo</h2>
+            <p>Putra dari Bapak Mismayadi Sembiring (Alm) & Ibu Yerni Wati (Almarhumah)</p>
+            <h2>Zhiand Marchella Dwi Cahya</h2>
+            <p>Putri dari Bapak Andre Luciano & Ibu Lina Marlina</p>
+        </div>
+
+        <!-- Ayat Al-Qur'an Section -->
+        <div class="section" style="background-image: url('foto/ayat-bg.jpg');">
+            <h2>Ayat Suci Al-Qur'an</h2>
+            <p><em>“Dan di antara tanda-tanda kekuasaan-Nya adalah Dia menciptakan untukmu dari jenis kamu sendiri pasangan hidup, supaya kamu cenderung dan merasa tentram kepadanya, dan dijadikannya di antara kamu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.”</em> <br> (Surah Ar-Rum 30:21)</p>
+        </div>
+
+        <!-- Countdown Section -->
+        <div class="section default-bg">
+            <h2>Hitung Mundur Menuju Hari Bahagia</h2>
+            <div class="countdown" id="countdown"></div>
+        </div>
+
+        <!-- Alamat Acara -->
+        <div class="section">
+            <h2>Alamat Acara</h2>
+            <div class="alamat-container">
+                <div class="alamat-box">
+                    <h3>Akad Nikah</h3>
+                    <p>Kediaman Mempelai Wanita</p>
+                    <p>Melcem, Air Raja, Kapling Pasir Mantang, RT04/RW01 No.24, Tanjung Sengkuang, Batu Ampar. Dekat PLN.</p>
+                    <p>22 Agustus 2025, Pukul 08:00 WIB</p>
+                </div>
+                <div class="alamat-box">
+                    <h3>Resepsi</h3>
+                    <p>Kediaman Mempelai Wanita</p>
+                    <p>Melcem, Air Raja, Kapling Pasir Mantang, RT04/RW01 No.24, Tanjung Sengkuang, Batu Ampar. Dekat PLN.</p>
+                    <p>22 Agustus 2025, Pukul 10:00 WIB</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galeri Kami -->
+        <div class="section">
+            <h2>Galeri Kami</h2>
+            <div class="gallery">
+                <img src="foto/1.jpg" alt="Foto 1">
+                <img src="foto/2.jpg" alt="Foto 2">
+                <img src="foto/3.jpg" alt="Foto 3">
+                <img src="foto/6.jpg" alt="Foto 6">
+                <img src="foto/7.jpg" alt="Foto 7">
+                <img src="foto/8.jpg" alt="Foto 8">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Ucapan</h2>
+            <p>Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami.</p>
+        </div>
+
+        <!-- RSVP Form -->
+        <div class="section">
+            <h2>Konfirmasi Kehadiran</h2>
+            <form class="rsvp-form">
+                <div class="input-group">
+                    <input type="text" placeholder="Nama Lengkap" required>
+                </div>
+                <div class="input-group">
+                    <input type="number" placeholder="Jumlah Tamu" required>
+                </div>
+                <div class="input-group">
+                    <select required>
+                        <option value="">Pilih Kehadiran</option>
+                        <option value="Hadir">Hadir</option>
+                        <option value="Tidak Hadir">Tidak Hadir</option>
+                    </select>
+                </div>
+                <button type="submit">Kirim Konfirmasi</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Hitung mundur untuk acara
+        const targetDate = new Date("August 22, 2025 08:00:00").getTime();
+        const countdown = document.getElementById("countdown");
+        setInterval(function(){
+            let now = new Date().getTime();
+            let distance = targetDate - now;
+            let days = Math.floor(distance / (1000*60*60*24));
+            let hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+            let minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+            let seconds = Math.floor((distance % (1000*60)) / 1000);
+            countdown.innerHTML = `${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik`;
+            if(distance < 0){
+                countdown.innerHTML = "Acara Sedang Berlangsung!";
+            }
+        }, 1000);
+
+        // Fungsi untuk memutar musik setelah tombol "Buka Undangan" ditekan
+        function openInvitation() {
+            document.getElementById('cover').style.display = 'none'; // Menyembunyikan cover
+            const music = document.getElementById('bg-music');
+            music.play(); // Memulai musik
+            document.getElementById('main-content').classList.add('show'); // Menampilkan konten
+        }
+    </script>
+</body>
+</html>
+
